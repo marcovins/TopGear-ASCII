@@ -1,0 +1,58 @@
+#ifndef FASE2_HPP
+#define FASE2_HPP
+
+#include <iostream>
+#include <string>
+#include "../ASCII_Engine/Sprite.hpp"
+#include "../ASCII_Engine/SpriteBuffer.hpp"
+#include "../ASCII_Engine/SpriteAnimado.hpp"
+#include "../ASCII_Engine/ObjetoDeJogo.hpp"
+#include <thread>
+#include <chrono>
+#include <atomic>
+#include <windows.h>
+#include <SFML/Audio.hpp>
+#include "../Objetos/Dirigivel.hpp"
+#include "../Objetos/Player.hpp"
+#include "../ASCII_Engine/Fase.hpp"
+
+class Fase2 : public Fase {
+private:
+    atomic<bool> flag;
+    SpriteBuffer screen;
+    sf::Music musica;
+    ObjetoDeJogo *pista;
+    ObjetoDeJogo *pista_left;
+    ObjetoDeJogo *pista_right;
+    ObjetoDeJogo *grass;
+    ObjetoDeJogo *predio_direito;
+    ObjetoDeJogo *predio_esquerdo;
+    ObjetoDeJogo *chaoPredios;
+    Player *hero;
+    Dirigivel *dirigivel;
+    
+
+    void init();
+
+    // Desabilita o construtor de cópia e o operador de atribuição
+    Fase2(const Fase2&) = delete;
+    Fase2& operator=(const Fase2&) = delete;
+
+public:
+    Fase2(SpriteBase &bg) : Fase("Fase - 2", bg) {this->init();};
+
+    void pausar(int milissegundos);
+
+    void capturarTecla();
+
+    int curva_esquerda(int);
+
+    int curva_direita(int);
+
+    unsigned run(SpriteBuffer &screen);
+
+    
+}; 
+
+
+#endif
