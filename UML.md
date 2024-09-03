@@ -1,4 +1,4 @@
-# Diagrama de Classes UML - PacMan - ASCII
+# Diagrama de Classes UML - TopGear - ASCII
 
 ```mermaid
 classDiagram
@@ -7,48 +7,88 @@ classDiagram
         <<Engine>>
     }
 
-    class Game {
-        <<Classe Principal>>
+    class Fase{
+        <<Abstract>>
+        # std::string name;
+        # SpriteBase* background;
+        # std::list<ObjetoDeJogo*> objs;
 
+        virtual void init() = 0
+        virtual unsigned run(SpriteBuffer &screen) = 0
+    }
+
+    class ObjetoDeJogo{
+        - std::string name;
+        - int posL, posC;
+        - SpriteBase* pSprite;
+
+        + virtual void update()
     }
 
     class Fase1{
-        <<Fase 1>>
-        - Screen background;
         - Player player;
-        - Enemy enemies[];
+        - Nuvem nuvem1;
+        - Nuvem nuvem2;
+        - Nuvem nuvem3;
+        - vector<Enemy> enemies;
+
+        + void init()
+        + unsigned run(SpriteBuffer &screen)
     }
 
     class Fase2{
-        <<Fase 2>>
-        - Screen background;
         - Player player;
-        - Enemy enemies[];
+        - vector<Enemy> enemies;
+        - Dirigivel dirigivel;
+
+        + void init()
+        + unsigned run(SpriteBuffer &screen)
     }
 
     class Fase3{
-        <<Fase 3>>
-        - Screen background;
         - Player player;
-        - Enemy enemies[];
+        - vector<Enemy> enemies;
+
+        + void init()
+        + unsigned run(SpriteBuffer &screen)
     }
 
-    
+    class Player{
+        + void update()
+    }
 
-    ASCII_Engine ..|> Game
+    class Enemy{
+        + getActive() const
+        + desativarEnemy()
+        + ativarEnemy()
+    }
 
-    Game ..|> Fase1
-    Game ..|> Fase2
-    Game ..|> Fase3
+    class Nuvem{
+        + void update()
+    }
 
-    Fase1 *-- Player1
-    Fase2 *-- Player2
-    Fase3 *-- Player3
-    
-    Fase1 *-- Enemy1
-    Fase2 *-- Enemy2
-    Fase3 *-- Enemy3
+    class Dirigivel{
+        + void update()
+    }
 
-    Fase1 *-- Screen1
-    Fase2 *-- Screen2
-    Fase3 *-- Screen3
+    class MusicaNaoEncontrada{
+        - string filename_;
+
+        + explicit MusicaNaoEncontrada(const string& filename)
+        + const char* what() const noexcept override
+        + string getFilename() const
+    }
+
+    ASCII_Engine <|-- Fase
+    ObjetoDeJogo --|> ASCII_Engine
+
+    Fase <|-- Fase1
+    Fase <|-- Fase2
+    Fase <|-- Fase3
+
+    Player <|-- ObjetoDeJogo
+    Enemy <|-- ObjetoDeJogo
+    Nuvem <|-- ObjetoDeJogo
+    Dirigivel <|-- ObjetoDeJogo
+
+    runtime_error <|-- MusicaNaoEncontrada

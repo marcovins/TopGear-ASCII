@@ -121,6 +121,11 @@ void Fase1::init() {
         // Inicializando heroi
         this->hero = new Player("hero1", Sprite("rsc/Fase1/jogo/hero1.img", COR::VERMELHA), 65, 121);
 
+        // Inicializando Enemy
+        this->enemies[0] = new Enemy("enemy1", Sprite("rsc/Fase1/inimigos/enemy1_pequeno.img", COR::AMARELA), 46, 133);
+        this->enemies[1] = new Enemy("enemy2", Sprite("rsc/Fase1/inimigos/enemy1_medio.img", COR::AMARELA), 55, 121);
+        this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", COR::AMARELA), 65, 121);
+
         // Inicializando nuvens
         this->nuvem1 = new Nuvem("nuvem1", Sprite("rsc/Fase1/nuvens/nuvem1.img", COR::BRANCA), 4, 219, 10);
         this->nuvem2 = new Nuvem("nuvem2", Sprite("rsc/Fase1/nuvens/nuvem2.img", COR::BRANCA), 12, 1, 5);
@@ -136,6 +141,9 @@ void Fase1::init() {
         this->montanha_direita_curva_esquerda = new ObjetoDeJogo("Montanha direita da curva esquerda", Sprite("rsc/Fase1/montanhas/montanha_direita_curva_esquerda.img", COR::MARROM), 18, 124);
 
         // desativando objs
+        this->enemies[0]->desativarEnemy();
+        this->enemies[1]->desativarEnemy();
+        this->enemies[2]->desativarEnemy();
         this->pista_right->desativarObj();
         this->pista_left->desativarObj();
         this->montanha_esquerda_curva_direita->desativarObj();
@@ -158,12 +166,38 @@ void Fase1::init() {
         this->objs.push_back(nuvem1);
         this->objs.push_back(nuvem2);
         this->objs.push_back(nuvem3);
+        this->objs.push_back(enemies[0]);
+        this->objs.push_back(enemies[1]);
+        this->objs.push_back(enemies[2]);
+    }
+
+    void Fase1::enemiesLogic()const {
+        if(this->enemies[0]->getActive()){
+            this->enemies[0]->desativarEnemy();
+            this->enemies[1]->ativarEnemy();
+            return;
+        }
+
+        else if(this->enemies[1]->getActive()){
+            this->enemies[1]->desativarEnemy();
+            this->enemies[2]->ativarEnemy();
+            return;
+        }
+
+        else if (this->enemies[2]->getActive()){
+        this->enemies[2]->desativarEnemy();
+        return;
+        }
+
+        else{
+            this->enemies[0]->ativarEnemy();
+            return;
+        }
     }
 
 unsigned Fase1::run(SpriteBuffer &screen) {
     this->screen = screen;
     system("cls");
-
     auto time = chrono::system_clock::now();
 
     int velocidade = 150;
@@ -174,6 +208,7 @@ unsigned Fase1::run(SpriteBuffer &screen) {
     thread teclado(capturarTecla, this);
 
     for (int i = 0; i < 1000 && flag.load(); i++) {
+
         /* if (i == 10) {
             this->curva_esquerda(velocidade);
             continue;
@@ -183,6 +218,14 @@ unsigned Fase1::run(SpriteBuffer &screen) {
             this->curva_direita(velocidade);
             continue;
         }*/
+
+        int numeroaleatorio = RandomNumberGenerator::getInstance().getRandomNumber();
+
+        if (numeroaleatorio == 10){
+            enemiesLogic();
+        }
+
+        
 
         this->update();
         this->draw(this->screen);

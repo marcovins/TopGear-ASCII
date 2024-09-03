@@ -14,24 +14,35 @@
 #include <SFML/Audio.hpp>
 #include "../Objetos/Nuvem.hpp"
 #include "../Objetos/Player.hpp"
+#include "../objetos/enemy.hpp"
 #include "../ASCII_Engine/Fase.hpp"
+#include "../objetos/Random.hpp"
 
 class Fase1 : public Fase {
 private:
     atomic<bool> flag;
     SpriteBuffer screen;
     sf::Music musica;
+
+    // Montanhas
     ObjetoDeJogo *montanha_direita;
     ObjetoDeJogo *montanha_esquerda;
     ObjetoDeJogo *montanha_esquerda_curva_esquerda;
     ObjetoDeJogo *montanha_esquerda_curva_direita;
     ObjetoDeJogo *montanha_direita_curva_esquerda;
     ObjetoDeJogo *montanha_direita_curva_direita;
+
+    // Pistas
     ObjetoDeJogo *pista;
     ObjetoDeJogo *pista_left;
     ObjetoDeJogo *pista_right;
     ObjetoDeJogo *grass;
+
+
     Player *hero;
+    Enemy *enemies[3];
+
+    // Nuvens
     Nuvem *nuvem1;
     Nuvem *nuvem2;
     Nuvem *nuvem3;
@@ -55,6 +66,7 @@ public:
 
     unsigned run(SpriteBuffer &screen);
 
+    void enemiesLogic()const;
     
 };
 

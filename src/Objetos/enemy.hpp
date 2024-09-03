@@ -2,19 +2,28 @@
 #define ENEMY_HPP
 
 #include "../ASCII_Engine/ObjetoDeJogo.hpp"
-#include <windows.h>
+#include "Random.hpp"
 
+using namespace std;
 
 class Enemy : public ObjetoDeJogo{
     private:
-        int cont = 0;
-
+        bool activeDerivada;
     public:
 
-        Enemy(std::string nome, const SpriteBase &desenho, int linha, int coluna) : ObjetoDeJogo(nome, desenho, linha, coluna) {};
+        Enemy(std::string nome, const SpriteBase &desenho, int linha, int coluna, int anim = 0) : ObjetoDeJogo(nome, desenho, linha, coluna), activeDerivada(false) {};
 
+        inline int getActive() const {return this->activeDerivada; }
 
-        void update();
+        inline void desativarEnemy() {
+            this->activeDerivada = false;
+            this->desativarObj();
+        }
+
+        inline void ativarEnemy(){
+            this->activeDerivada = true;
+            this->ativarObj();
+        }
 };     
 
 #endif

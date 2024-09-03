@@ -48,7 +48,6 @@ private:
 	std::string name;
 	int	posL, posC;
 	SpriteBase *pSprite;
-	
 	bool active;
 };
 

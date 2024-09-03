@@ -114,7 +114,7 @@ void Fase2::init() {
         if (!musica.openFromFile("src/Songs/Top Gear Soundtrack - Track 2.mp3")) {
             throw MusicaNaoEncontrada("src/Songs/Top Gear Soundtrack - Track 2.mp3"); // Se não conseguir carregar o arquivo, sai do programa
         }
-        this->musica.setVolume(50);
+        this->musica.setVolume(0);
         this->pista =  new ObjetoDeJogo("pista_reta", SpriteAnimado("rsc/Fase1/pistas/pista_reta.anm", 1, COR::AMARELA), 47, 90);
         this->pista_right = new ObjetoDeJogo("pista_direita", SpriteAnimado("rsc/Fase1/pistas/pista_direita.anm", 1, COR::AMARELA),48,85);
         this->pista_left = new ObjetoDeJogo("pista_esquerda", SpriteAnimado("rsc/Fase1/pistas/pista_esquerda.anm", 1, COR::AMARELA),48,85);
