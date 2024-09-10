@@ -62,5 +62,6 @@
         "span": "cpp",
         "stop_token": "cpp",
         "variant": "cpp"
-    }
+    },
+    "makefile.makefilePath": ""
 }

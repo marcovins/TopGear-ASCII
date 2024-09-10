@@ -1,1 +1,0 @@
-g++ -o game.exe src/ASCII_Engine/Core/*.cpp src/ASCII_Engine/utils/*.cpp src/ASCII_Engine/*.cpp src/Objetos/*.cpp src/Fases/*.cpp  src/main.cpp -lsfml-audio
