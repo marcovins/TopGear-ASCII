@@ -22,6 +22,13 @@ void Fase1::capturarTecla() {
             break;
         }
 
+        if(haInimigos()) {
+            if(this->hero->colideCom(this->enemies[2])){
+            this->flag.store(false);
+            break;
+            }
+        }
+
         // Adicionar mais condições conforme necessário para outras teclas
         //pausar(50);
     }
@@ -108,23 +115,18 @@ int Fase1::curva_direita(int velocidade){
 void Fase1::init() {
         this->flag = true;
         this->screen = SpriteBuffer(300, 77);
-        this->musica.setLoop(true);
         // Carrega o arquivo de música
         if (!musica.openFromFile("src/Songs/Top Gear_ Vegas.mp3")) {
             throw MusicaNaoEncontrada("src/Songs/Top Gear_ Vegas.mp3"); // Se não conseguir carregar o arquivo, sai do programa
         }
-        this->musica.setVolume(100);
+        this->musica.setLoop(true);
+        this->musica.setVolume(0);
         this->pista =  new ObjetoDeJogo("pista_reta", SpriteAnimado("rsc/Fase1/pistas/pista_reta.anm", 1, COR::AMARELA), 47, 90);
         this->pista_right = new ObjetoDeJogo("pista_direita", SpriteAnimado("rsc/Fase1/pistas/pista_direita.anm", 1, COR::AMARELA),48,85);
         this->pista_left = new ObjetoDeJogo("pista_esquerda", SpriteAnimado("rsc/Fase1/pistas/pista_esquerda.anm", 1, COR::AMARELA),48,85);
 
         // Inicializando heroi
         this->hero = new Player("hero1", Sprite("rsc/Fase1/jogo/hero1.img", COR::VERMELHA), 65, 121);
-
-        // Inicializando Enemy
-        this->enemies[0] = new Enemy("enemy1", Sprite("rsc/Fase1/inimigos/enemy1_pequeno.img", COR::AMARELA), 46, 133);
-        this->enemies[1] = new Enemy("enemy2", Sprite("rsc/Fase1/inimigos/enemy1_medio.img", COR::AMARELA), 55, 121);
-        this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", COR::AMARELA), 65, 121);
 
         // Inicializando nuvens
         this->nuvem1 = new Nuvem("nuvem1", Sprite("rsc/Fase1/nuvens/nuvem1.img", COR::BRANCA), 4, 219, 10);
@@ -141,9 +143,6 @@ void Fase1::init() {
         this->montanha_direita_curva_esquerda = new ObjetoDeJogo("Montanha direita da curva esquerda", Sprite("rsc/Fase1/montanhas/montanha_direita_curva_esquerda.img", COR::MARROM), 18, 124);
 
         // desativando objs
-        this->enemies[0]->desativarEnemy();
-        this->enemies[1]->desativarEnemy();
-        this->enemies[2]->desativarEnemy();
         this->pista_right->desativarObj();
         this->pista_left->desativarObj();
         this->montanha_esquerda_curva_direita->desativarObj();
@@ -166,34 +165,108 @@ void Fase1::init() {
         this->objs.push_back(nuvem1);
         this->objs.push_back(nuvem2);
         this->objs.push_back(nuvem3);
-        this->objs.push_back(enemies[0]);
-        this->objs.push_back(enemies[1]);
-        this->objs.push_back(enemies[2]);
+
+        // inicializando array de inimigos
+        this->enemies[0] = nullptr;
+        this->enemies[1] = nullptr;
+        this->enemies[2] = nullptr;
+
+        
     }
 
-    void Fase1::enemiesLogic()const {
-        if(this->enemies[0]->getActive()){
-            this->enemies[0]->desativarEnemy();
-            this->enemies[1]->ativarEnemy();
-            return;
+void Fase1::enemyCreator(){
+
+    if(this->objs.size() > 14){
+        // Limpando lista de inimigos
+        for(auto enemy : this->enemies) {
+            delete enemy;
+            this->objs.pop_back();
+        }
+    }
+    
+    // Inicializando Enemy
+    int numero = RandomNumberGenerator::getInstance().getRandomNumber();
+    auto cor = COR::PADRAO;
+
+    switch (numero)
+    {
+    case 1:
+        cor = COR::VERMELHA;
+        break;
+    
+    case 2:
+        cor = COR::VERDE;
+        break;
+
+    case 3:
+        cor = COR::ROSA;
+        break;
+    
+    case 4:
+        cor = COR::MAGENTA;
+        break;
+
+    default:
+        cor = COR::PADRAO;
+        break;
+    }
+    this->enemies[0] = new Enemy("enemy1", Sprite("rsc/Fase1/inimigos/enemy1_pequeno.img", cor ), 46, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 133 : 155) );
+    this->enemies[1] = new Enemy("enemy2", Sprite("rsc/Fase1/inimigos/enemy1_medio.img", cor ), 55, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
+    this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", cor ), 65, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
+
+    this->enemies[0]->desativarEnemy();
+    this->enemies[1]->desativarEnemy();
+    this->enemies[2]->desativarEnemy();
+
+    this->objs.push_back(enemies[0]);
+    this->objs.push_back(enemies[1]);
+    this->objs.push_back(enemies[2]);
+}
+
+void Fase1::enemiesLogic()const {
+    if(this->enemies[0]->getActive()){
+        this->enemies[0]->desativarEnemy();
+        this->enemies[1]->ativarEnemy();
+        if (RandomNumberGenerator::getInstance().getRandomNumber() % 2 == 0){
+            if (this->enemies[1]->getPosC() == 121){
+                this->enemies[1]->moveTo(this->enemies[1]->getPosL(), 155);
+                this->enemies[2]->moveTo(this->enemies[2]->getPosL(), 155);
+            }
+        else if(this->enemies[1]->getPosC() == 155){
+            this->enemies[1]->moveTo(this->enemies[1]->getPosL(), 121);
+            this->enemies[2]->moveTo(this->enemies[2]->getPosL(), 121);
         }
 
-        else if(this->enemies[1]->getActive()){
-            this->enemies[1]->desativarEnemy();
-            this->enemies[2]->ativarEnemy();
-            return;
         }
-
-        else if (this->enemies[2]->getActive()){
-        this->enemies[2]->desativarEnemy();
         return;
-        }
-
-        else{
-            this->enemies[0]->ativarEnemy();
-            return;
-        }
     }
+
+    else if(this->enemies[1]->getActive()){
+        this->enemies[1]->desativarEnemy();
+        this->enemies[2]->ativarEnemy();
+        
+        return;
+    }
+
+    else if (this->enemies[2]->getActive()){
+    this->enemies[2]->desativarEnemy();
+    return;
+    }
+
+    else{
+        this->enemies[0]->ativarEnemy();
+        return;
+    }
+}
+
+bool Fase1::haInimigos()const{
+    return (
+        (this->enemies[0] != nullptr && this->enemies[0]->getActive()) 
+        ||
+        (this->enemies[1] != nullptr && this->enemies[1]->getActive()) 
+        ||
+        (this->enemies[2] != nullptr && this->enemies[2]->getActive()));
+}
 
 unsigned Fase1::run(SpriteBuffer &screen) {
     this->screen = screen;
@@ -221,11 +294,13 @@ unsigned Fase1::run(SpriteBuffer &screen) {
 
         int numeroaleatorio = RandomNumberGenerator::getInstance().getRandomNumber();
 
-        if (numeroaleatorio == 10){
-            enemiesLogic();
+        if (!(haInimigos())) {
+            enemyCreator();
         }
 
-        
+        if(i % 10 == 0){
+            enemiesLogic();
+        }
 
         this->update();
         this->draw(this->screen);

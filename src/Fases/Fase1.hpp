@@ -3,19 +3,20 @@
 
 #include <iostream>
 #include <string>
-#include "../ASCII_Engine/Sprite.hpp"
-#include "../ASCII_Engine/SpriteBuffer.hpp"
-#include "../ASCII_Engine/SpriteAnimado.hpp"
-#include "../ASCII_Engine/ObjetoDeJogo.hpp"
 #include <thread>
 #include <chrono>
 #include <atomic>
 #include <windows.h>
 #include <SFML/Audio.hpp>
+#include "../ASCII_Engine/Sprite.hpp"
+#include "../ASCII_Engine/TextSprite.hpp"
+#include "../ASCII_Engine/SpriteBuffer.hpp"
+#include "../ASCII_Engine/SpriteAnimado.hpp"
+#include "../ASCII_Engine/ObjetoDeJogo.hpp"
+#include "../ASCII_Engine/Fase.hpp"
 #include "../Objetos/Nuvem.hpp"
 #include "../Objetos/Player.hpp"
 #include "../objetos/enemy.hpp"
-#include "../ASCII_Engine/Fase.hpp"
 #include "../objetos/Random.hpp"
 
 class Fase1 : public Fase {
@@ -47,6 +48,7 @@ private:
     Nuvem *nuvem2;
     Nuvem *nuvem3;
 
+
     void init();
 
     // Desabilita o construtor de cópia e o operador de atribuição
@@ -67,6 +69,10 @@ public:
     unsigned run(SpriteBuffer &screen);
 
     void enemiesLogic()const;
+
+    void enemyCreator();
+
+    bool haInimigos()const;
     
 };
 

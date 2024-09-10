@@ -22,7 +22,7 @@ public:
 	
 	const ObjetoDeJogo &operator=(const ObjetoDeJogo &);
 	
-	bool colideCom(const ObjetoDeJogo &) const;			//considera os limites do sprite (quadrado)
+	virtual bool colideCom(const ObjetoDeJogo &) const;			//considera os limites do sprite (quadrado)
 	bool colideComBordas(const ObjetoDeJogo &) const;	//considera os limites do desenho propriamente dito
 	
 	void moveTo(int posL, int posC){ this->posL = posL; this->posC = posC;}

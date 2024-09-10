@@ -13,6 +13,8 @@ class Enemy : public ObjetoDeJogo{
 
         Enemy(std::string nome, const SpriteBase &desenho, int linha, int coluna, int anim = 0) : ObjetoDeJogo(nome, desenho, linha, coluna), activeDerivada(false) {};
 
+        virtual ~Enemy(){};
+
         inline int getActive() const {return this->activeDerivada; }
 
         inline void desativarEnemy() {
