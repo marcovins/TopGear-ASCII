@@ -111,7 +111,7 @@ int Fase2::curva_direita(int velocidade){
 }*/
 
 void Fase2::init() {
-        this->flag = true;
+    
         this->screen = SpriteBuffer(300, 77);
         this->musica.setLoop(true);
         // Carrega o arquivo de música
@@ -251,6 +251,7 @@ bool Fase2::haInimigos()const{
 
 unsigned Fase2::run(SpriteBuffer &screen) {
     this->screen = screen;
+    this->flag.store(true);
     system("cls");
 
     int velocidade = 150;
@@ -258,11 +259,11 @@ unsigned Fase2::run(SpriteBuffer &screen) {
     musica.play();
 
     // Crie uma thread para capturar entradas
-    thread teclado(capturarTecla, this);
+    thread tecladoFase2(capturarTecla, this);
 
     int cont = 0;
 
-    while(flag.load()) {
+    while(this->flag.load()) {
         cont++;
         /* if (i == 10) {
             this->curva_esquerda(velocidade);
@@ -293,6 +294,6 @@ unsigned Fase2::run(SpriteBuffer &screen) {
         if(velocidade > 80) velocidade--;
     }
 
-    teclado.join(); // Espera a thread do teclado terminar
+    tecladoFase2.join(); // Espera a thread do teclado terminar
     return 0;
 }

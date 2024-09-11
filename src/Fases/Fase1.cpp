@@ -24,8 +24,8 @@ void Fase1::capturarTecla() {
 
         if(haInimigos()) {
             if(this->hero->colideCom(this->enemies[2])){
-            this->flag.store(false);
-            break;
+                this->flag.store(false);
+                break;
             }
         }
     }
@@ -110,7 +110,7 @@ int Fase1::curva_direita(int velocidade){
 }
 
 void Fase1::init() {
-        this->flag = true;
+    
         this->screen = SpriteBuffer(300, 77);
         // Carrega o arquivo de música
         if (!musica.openFromFile("src/Songs/Top Gear_ Vegas.mp3")) {
@@ -267,6 +267,7 @@ bool Fase1::haInimigos()const{
 
 unsigned Fase1::run(SpriteBuffer &screen) {
     this->screen = screen;
+    this->flag.store(true);
     system("cls");
 
     int velocidade = 150;
@@ -274,11 +275,11 @@ unsigned Fase1::run(SpriteBuffer &screen) {
     musica.play();
 
     // Crie uma thread para capturar entradas
-    thread teclado(capturarTecla, this);
+    thread tecladoFase1(capturarTecla, this);
     
     int cont = 0;
 
-    while(flag.load()) {
+    while(this->flag.load()) {
         cont++;
         /* if (i == 10) {
             this->curva_esquerda(velocidade);
@@ -308,7 +309,8 @@ unsigned Fase1::run(SpriteBuffer &screen) {
         system("cls");
         if(velocidade > 80) velocidade--;
     }
+    
+    tecladoFase1.join(); // Espera a thread do teclado terminar
 
-    teclado.join(); // Espera a thread do teclado terminar
     return 0;
 }

@@ -34,7 +34,6 @@ void Menu::capturarTecla() {
 
 
 void Menu::init(){
-    this->escolhaFase = 0;
     this->flag.store(true);
     this->screen = SpriteBuffer(300, 77);
 
@@ -52,9 +51,11 @@ void Menu::init(){
 }
 
 unsigned Menu::run(SpriteBuffer &screen){
-
+    this->flag.store(true);
+    this->seta->moveTo(38,88);
+    this->escolhaFase = 0;
     // Crie uma thread para capturar entradas
-    thread teclado(capturarTecla, this);
+    thread tecladoMenu(capturarTecla, this);
 
     while (this->flag.load())
     {
@@ -68,7 +69,7 @@ unsigned Menu::run(SpriteBuffer &screen){
         system("cls");
     }
 
-    teclado.join();
+    tecladoMenu.join();
     return this->escolhaFase;
     
 }

@@ -13,28 +13,31 @@ unsigned Game::run(SpriteBuffer &screen) {
     while (this->estado != Fase::END_GAME) {
         int escolha = this->menu->run(screen);
 
-        switch (escolha) {
-        case 0:
+        if (escolha == 0) {
             this->estado = Fase::LEVEL_1;
             if (this->fase1) {
-                this->fase1->run(screen);
+                int retorno = this->fase1->run(screen);
             }
-            break;
+            // Retorne ao MENU após concluir a Fase 1
+            this->estado = Fase::MENU;
+            continue;
+            } 
+        else if (escolha == 1) {
 
-        case 1:
             this->estado = Fase::LEVEL_2;
             if (this->fase2) {
-                this->fase2->run(screen);
+                int retorno = this->fase2->run(screen);
             }
-            break;
-
-        default:
+            // Retorne ao MENU após concluir a Fase 2
+            this->estado = Fase::MENU;
+            continue;
+            } 
+        else {
             this->estado = Fase::END_GAME;
             return 0;
-        }
+            }
 
         this->update();
-
     }
 
     return 0;
