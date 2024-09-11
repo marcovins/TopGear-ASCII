@@ -14,9 +14,19 @@ void Menu::capturarTecla() {
             this->escolhaFase -= 1;
         }
 
+        else if ((GetAsyncKeyState(VK_UP) & 0x8000) && (this->escolhaFase == 0)) { 
+            this->seta->moveTo(this->seta->getPosL() + 20, this->seta->getPosC());
+            this->escolhaFase = 2;
+        }
+
         else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) && (this->escolhaFase < 2)) { 
             this->seta->moveTo(this->seta->getPosL() + 10, this->seta->getPosC());
             this->escolhaFase += 1;
+        }
+
+        else if ((GetAsyncKeyState(VK_DOWN) & 0x8000) && (this->escolhaFase == 2)) { 
+            this->seta->moveTo(this->seta->getPosL() - 20, this->seta->getPosC());
+            this->escolhaFase = 0;
         }
 
         else if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
