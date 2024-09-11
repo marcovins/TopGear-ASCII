@@ -24,6 +24,7 @@ private:
     atomic<bool> flag;
     SpriteBuffer screen;
     sf::Music musica;
+    Sprite * gameover;
 
     // Montanhas
     ObjetoDeJogo *montanha_direita;

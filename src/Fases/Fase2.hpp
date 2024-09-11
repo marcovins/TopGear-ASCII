@@ -21,6 +21,7 @@ private:
     atomic<bool> flag;
     SpriteBuffer screen;
     sf::Music musica;
+    Sprite * gameover;
 
     ObjetoDeJogo *pista;
     ObjetoDeJogo *pista_left;

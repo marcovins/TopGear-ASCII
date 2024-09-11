@@ -110,7 +110,7 @@ int Fase1::curva_direita(int velocidade){
 }
 
 void Fase1::init() {
-    
+
         this->screen = SpriteBuffer(300, 77);
         // Carrega o arquivo de música
         if (!musica.openFromFile("src/Songs/Top Gear_ Vegas.mp3")) {
@@ -121,6 +121,7 @@ void Fase1::init() {
         this->pista =  new ObjetoDeJogo("pista_reta", SpriteAnimado("rsc/Fase1/pistas/pista_reta.anm", 1, COR::AMARELA), 47, 90);
         this->pista_right = new ObjetoDeJogo("pista_direita", SpriteAnimado("rsc/Fase1/pistas/pista_direita.anm", 1, COR::AMARELA),48,85);
         this->pista_left = new ObjetoDeJogo("pista_esquerda", SpriteAnimado("rsc/Fase1/pistas/pista_esquerda.anm", 1, COR::AMARELA),48,85);
+        this->gameover = new Sprite("rsc/Game/GameOver.img", COR::BRANCA);
 
         // Inicializando heroi
         this->hero = new Player("hero1", Sprite("rsc/Fase1/jogo/hero1.img", COR::VERMELHA), 65, 121);
@@ -312,5 +313,11 @@ unsigned Fase1::run(SpriteBuffer &screen) {
     
     tecladoFase1.join(); // Espera a thread do teclado terminar
 
+
+    musica.stop();
+    this->screen.clear();
+    this->gameover->draw(this->screen, 36, 109);
+    cout << this->screen << endl;
+    pausar(5000);
     return 0;
 }
