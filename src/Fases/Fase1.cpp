@@ -28,9 +28,6 @@ void Fase1::capturarTecla() {
             break;
             }
         }
-
-        // Adicionar mais condições conforme necessário para outras teclas
-        //pausar(50);
     }
 }
 
@@ -271,7 +268,6 @@ bool Fase1::haInimigos()const{
 unsigned Fase1::run(SpriteBuffer &screen) {
     this->screen = screen;
     system("cls");
-    auto time = chrono::system_clock::now();
 
     int velocidade = 150;
 

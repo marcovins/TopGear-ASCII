@@ -21,14 +21,19 @@ private:
     atomic<bool> flag;
     SpriteBuffer screen;
     sf::Music musica;
+
     ObjetoDeJogo *pista;
     ObjetoDeJogo *pista_left;
     ObjetoDeJogo *pista_right;
+
     ObjetoDeJogo *grass;
     ObjetoDeJogo *predio_direito;
     ObjetoDeJogo *predio_esquerdo;
+
     Player *hero;
     Dirigivel *dirigivel;
+
+    Enemy *enemies[3];
     
 
     void init();
@@ -50,7 +55,12 @@ public:
 
     unsigned run(SpriteBuffer &screen);
 
-    
+    void enemiesLogic()const;
+
+    void enemyCreator();
+
+    bool haInimigos()const;
+
 }; 
 
 

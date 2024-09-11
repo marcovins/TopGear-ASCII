@@ -22,8 +22,12 @@ void Fase2::capturarTecla() {
             break;
         }
 
-        // Adicionar mais condições conforme necessário para outras teclas
-        //pausar(50);
+        if(haInimigos()) {
+            if(this->hero->colideCom(this->enemies[2])){
+            this->flag.store(false);
+            break;
+            }
+        }
     }
 }
 
@@ -144,13 +148,110 @@ void Fase2::init() {
         this->objs.push_back(pista_left);
         this->objs.push_back(hero);
         this->objs.push_back(dirigivel);
+
+        // inicializando array de inimigos
+        this->enemies[0] = nullptr;
+        this->enemies[1] = nullptr;
+        this->enemies[2] = nullptr;
     }
+
+void Fase2::enemyCreator(){
+
+    if(this->objs.size() > 14){
+        // Limpando lista de inimigos
+        for(auto enemy : this->enemies) {
+            delete enemy;
+            this->objs.pop_back();
+        }
+    }
+    
+    // Inicializando Enemy
+    int numero = RandomNumberGenerator::getInstance().getRandomNumber();
+    auto cor = COR::PADRAO;
+
+    switch (numero)
+    {
+    case 1:
+        cor = COR::VERMELHA;
+        break;
+    
+    case 2:
+        cor = COR::VERDE;
+        break;
+
+    case 3:
+        cor = COR::ROSA;
+        break;
+    
+    case 4:
+        cor = COR::MAGENTA;
+        break;
+
+    default:
+        cor = COR::PADRAO;
+        break;
+    }
+    this->enemies[0] = new Enemy("enemy1", Sprite("rsc/Fase1/inimigos/enemy1_pequeno.img", cor ), 46, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 133 : 155) );
+    this->enemies[1] = new Enemy("enemy2", Sprite("rsc/Fase1/inimigos/enemy1_medio.img", cor ), 55, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
+    this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", cor ), 65, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
+
+    this->enemies[0]->desativarEnemy();
+    this->enemies[1]->desativarEnemy();
+    this->enemies[2]->desativarEnemy();
+
+    this->objs.push_back(enemies[0]);
+    this->objs.push_back(enemies[1]);
+    this->objs.push_back(enemies[2]);
+}
+
+void Fase2::enemiesLogic()const {
+    if(this->enemies[0]->getActive()){
+        this->enemies[0]->desativarEnemy();
+        this->enemies[1]->ativarEnemy();
+        if (RandomNumberGenerator::getInstance().getRandomNumber() % 2 == 0){
+            if (this->enemies[1]->getPosC() == 121){
+                this->enemies[1]->moveTo(this->enemies[1]->getPosL(), 155);
+                this->enemies[2]->moveTo(this->enemies[2]->getPosL(), 155);
+            }
+        else if(this->enemies[1]->getPosC() == 155){
+            this->enemies[1]->moveTo(this->enemies[1]->getPosL(), 121);
+            this->enemies[2]->moveTo(this->enemies[2]->getPosL(), 121);
+        }
+
+        }
+        return;
+    }
+
+    else if(this->enemies[1]->getActive()){
+        this->enemies[1]->desativarEnemy();
+        this->enemies[2]->ativarEnemy();
+        
+        return;
+    }
+
+    else if (this->enemies[2]->getActive()){
+    this->enemies[2]->desativarEnemy();
+    return;
+    }
+
+    else{
+        this->enemies[0]->ativarEnemy();
+        return;
+    }
+}
+
+bool Fase2::haInimigos()const{
+    return (
+        (this->enemies[0] != nullptr && this->enemies[0]->getActive()) 
+        ||
+        (this->enemies[1] != nullptr && this->enemies[1]->getActive()) 
+        ||
+        (this->enemies[2] != nullptr && this->enemies[2]->getActive()));
+}
 
 unsigned Fase2::run(SpriteBuffer &screen) {
     this->screen = screen;
     system("cls");
-
-    auto time = chrono::system_clock::now();
 
     int velocidade = 150;
 
@@ -169,6 +270,16 @@ unsigned Fase2::run(SpriteBuffer &screen) {
             this->curva_direita(velocidade);
             continue;
         }*/
+
+        int numeroaleatorio = RandomNumberGenerator::getInstance().getRandomNumber();
+
+        if (!(haInimigos())) {
+            enemyCreator();
+        }
+
+        if(i % 10 == 0){
+            enemiesLogic();
+        }
 
         this->update();
         this->draw(this->screen);
