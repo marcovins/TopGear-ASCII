@@ -22,6 +22,7 @@ private:
     SpriteBuffer screen;
     sf::Music musica;
     Sprite * gameover;
+    Sprite * pontilhado;
 
     ObjetoDeJogo *pista;
     ObjetoDeJogo *pista_left;

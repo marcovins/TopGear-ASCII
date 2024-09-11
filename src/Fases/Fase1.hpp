@@ -25,7 +25,7 @@ private:
     SpriteBuffer screen;
     sf::Music musica;
     Sprite * gameover;
-
+    Sprite * pontilhado;
     // Montanhas
     ObjetoDeJogo *montanha_direita;
     ObjetoDeJogo *montanha_esquerda;

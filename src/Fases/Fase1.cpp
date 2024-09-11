@@ -122,6 +122,7 @@ void Fase1::init() {
         this->pista_right = new ObjetoDeJogo("pista_direita", SpriteAnimado("rsc/Fase1/pistas/pista_direita.anm", 1, COR::AMARELA),48,85);
         this->pista_left = new ObjetoDeJogo("pista_esquerda", SpriteAnimado("rsc/Fase1/pistas/pista_esquerda.anm", 1, COR::AMARELA),48,85);
         this->gameover = new Sprite("rsc/Game/GameOver.img", COR::BRANCA);
+        this->pontilhado = new Sprite("rsc/Menu/background.img", COR::VERMELHA);
 
         // Inicializando heroi
         this->hero = new Player("hero1", Sprite("rsc/Fase1/jogo/hero1.img", COR::VERMELHA), 65, 121);
@@ -316,6 +317,7 @@ unsigned Fase1::run(SpriteBuffer &screen) {
 
     musica.stop();
     this->screen.clear();
+    this->pontilhado->draw(this->screen, 0,0);
     this->gameover->draw(this->screen, 36, 109);
     cout << this->screen << endl;
     pausar(5000);
