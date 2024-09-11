@@ -56,7 +56,7 @@ private:
     Fase1& operator=(const Fase1&) = delete;
 
 public:
-    Fase1(SpriteBase &bg) : Fase("Fase - 1", bg) {this->init();};
+    Fase1() : Fase("Fase - 1", Sprite("rsc/Fase1/jogo/background.img", COR::AZUL)) {this->init();};
 
     void pausar(int milissegundos);
 

@@ -39,7 +39,7 @@ private:
     Fase2& operator=(const Fase2&) = delete;
 
 public:
-    Fase2(SpriteBase &bg) : Fase("Fase - 2", bg) {this->init();};
+    Fase2() : Fase("Fase - 2", Sprite("rsc/Fase2/background/ceu.img", COR::AZUL)) {this->init();};
 
     void pausar(int milissegundos);
 

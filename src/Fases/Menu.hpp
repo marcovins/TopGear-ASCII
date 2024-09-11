@@ -39,7 +39,7 @@ private:
     Menu& operator=(const Menu&) = delete;
 
 public:
-    Menu(SpriteBase &bg) : Fase("Menu", bg) {this->init();};
+    Menu() : Fase("Menu", Sprite("rsc/Menu/background.img", COR::VERMELHA)) {this->init();};
 
     void pausar(int milissegundos);
 
