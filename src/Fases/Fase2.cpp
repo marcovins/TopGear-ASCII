@@ -124,12 +124,11 @@ void Fase2::init() {
 
         // Inicializando dirigivel
         this->dirigivel = new Dirigivel("dirigivel", SpriteAnimado("rsc/Fase2/objetos/dirigivel.anm",1, COR::BRANCA), 0, 219, 10);
-        this->grass = new ObjetoDeJogo("Grama", Sprite("rsc/Fase1/jogo/grass.img", COR::VERDE), 55, 0);
 
-        //Montanhas do cenario
+        //Predios e grama
         this->predio_direito = new ObjetoDeJogo("predio_direito", Sprite("rsc/Fase2/background/predio_direito.img", COR::BRANCA), 13, 0);
         this->predio_esquerdo = new ObjetoDeJogo("predio_esquerdo", Sprite("rsc/Fase2/background/predio_esquerdo.img", COR::BRANCA), 13, 185);
-        //this->chaoPredios = new ObjetoDeJogo("chaoPredios", Sprite("rsc/Fase2/background/chao_predios.img", COR::VERMELHA), 43, 0);
+        this->grass = new ObjetoDeJogo("Grama", Sprite("rsc/Fase1/jogo/grass.img", COR::MARROM), 48, 0);
 
         // desativando objs
         this->pista_right->desativarObj();
@@ -137,7 +136,6 @@ void Fase2::init() {
         
 
         // adicionando objs a lista gerenciadora
-        //this->objs.push_back(chaoPredios);
         this->objs.push_back(predio_direito);
         this->objs.push_back(predio_esquerdo);
         this->objs.push_back(grass);

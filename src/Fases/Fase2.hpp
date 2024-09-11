@@ -27,7 +27,6 @@ private:
     ObjetoDeJogo *grass;
     ObjetoDeJogo *predio_direito;
     ObjetoDeJogo *predio_esquerdo;
-    ObjetoDeJogo *chaoPredios;
     Player *hero;
     Dirigivel *dirigivel;
     
