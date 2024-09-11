@@ -15,6 +15,8 @@ class Game : public Fase{
         Fase2 *fase2;
         Menu *menu;
 
+        int estado;
+
         void init();
 
     // Desabilita o construtor de cópia e o operador de atribuição

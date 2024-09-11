@@ -275,9 +275,11 @@ unsigned Fase1::run(SpriteBuffer &screen) {
 
     // Crie uma thread para capturar entradas
     thread teclado(capturarTecla, this);
+    
+    int cont = 0;
 
-    for (int i = 0; i < 1000 && flag.load(); i++) {
-
+    while(flag.load()) {
+        cont++;
         /* if (i == 10) {
             this->curva_esquerda(velocidade);
             continue;
@@ -294,7 +296,7 @@ unsigned Fase1::run(SpriteBuffer &screen) {
             enemyCreator();
         }
 
-        if(i % 10 == 0){
+        if(cont % 10 == 0){
             enemiesLogic();
         }
 
