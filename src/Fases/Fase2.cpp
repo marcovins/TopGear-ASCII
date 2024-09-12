@@ -25,6 +25,7 @@ void Fase2::capturarTecla() {
         if(haInimigos()) {
             if(this->hero->colideCom(this->enemies[2])){
             this->flag.store(false);
+            this->enemies[2]->desativarEnemy();
             break;
             }
         }
