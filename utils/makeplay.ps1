@@ -17,4 +17,4 @@ Write-Host "Compilacao completa. Iniciando o TopGear - ASCII..."
 Start-Process "ubuntu.exe" -ArgumentList "run", "cd '/mnt/c/Users/marco/Documents/Projeto - POO/TopGear' && ./game.exe"
 
 # Executa o script AutoHotKey para ajustar o zoom
-Start-Process "adjust_zoom.ahk"
+Start-Process "utils/adjust_zoom.ahk"
