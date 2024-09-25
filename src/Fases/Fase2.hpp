@@ -19,6 +19,7 @@
 class Fase2 : public Fase {
 private:
     atomic<bool> flag;
+    bool escape;
     SpriteBuffer screen;
     sf::Music musica;
     Sprite * gameover;
@@ -62,6 +63,8 @@ public:
     void enemyCreator();
 
     bool haInimigos()const;
+
+    void gameOver();
 
 }; 
 

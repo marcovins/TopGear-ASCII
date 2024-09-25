@@ -19,6 +19,7 @@ void Fase1::capturarTecla() {
         
         if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) {
             this->flag.store(false); // Sinaliza para a main que o programa deve encerrar
+            this->escape = true; // Sinaliza para a main que a tecla escape foi pressionada
             break;
         }
 
@@ -111,14 +112,14 @@ int Fase1::curva_direita(int velocidade){
 }
 
 void Fase1::init() {
-
+        this->escape = false;
         this->screen = SpriteBuffer(300, 77);
         // Carrega o arquivo de música
         if (!musica.openFromFile("src/Songs/Top Gear_ Vegas.mp3")) {
             throw MusicaNaoEncontrada("src/Songs/Top Gear_ Vegas.mp3"); // Se não conseguir carregar o arquivo, sai do programa
         }
         this->musica.setLoop(true);
-        this->musica.setVolume(0);
+        this->musica.setVolume(100);
         this->pista =  new ObjetoDeJogo("pista_reta", SpriteAnimado("rsc/Fase1/pistas/pista_reta.anm", 1, COR::AMARELA), 47, 90);
         this->pista_right = new ObjetoDeJogo("pista_direita", SpriteAnimado("rsc/Fase1/pistas/pista_direita.anm", 1, COR::AMARELA),48,85);
         this->pista_left = new ObjetoDeJogo("pista_esquerda", SpriteAnimado("rsc/Fase1/pistas/pista_esquerda.anm", 1, COR::AMARELA),48,85);
@@ -212,7 +213,7 @@ void Fase1::enemyCreator(){
     }
     this->enemies[0] = new Enemy("enemy1", Sprite("rsc/Fase1/inimigos/enemy1_pequeno.img", cor ), 46, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 133 : 155) );
     this->enemies[1] = new Enemy("enemy2", Sprite("rsc/Fase1/inimigos/enemy1_medio.img", cor ), 55, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
-    this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", cor ), 65, ( (RandomNumberGenerator::getInstance().getRandomNumber() % 2 != 0)? 121 : 155 ) );
+    this->enemies[2] = new Enemy("enemy3", Sprite("rsc/Fase1/inimigos/enemy1_grande.img", cor ), 65, this->enemies[1]->getPosC() );
 
     this->enemies[0]->desativarEnemy();
     this->enemies[1]->desativarEnemy();
@@ -268,6 +269,14 @@ bool Fase1::haInimigos()const{
         (this->enemies[2] != nullptr && this->enemies[2]->getActive()));
 }
 
+void Fase1::gameOver(){
+    this->pontilhado->draw(this->screen, 0,0);
+    this->gameover->draw(this->screen, 36, 109);
+    cout << this->screen << endl;
+    pausar(5000);
+}
+
+
 unsigned Fase1::run(SpriteBuffer &screen) {
     this->screen = screen;
     this->flag.store(true);
@@ -318,9 +327,10 @@ unsigned Fase1::run(SpriteBuffer &screen) {
 
     musica.stop();
     this->screen.clear();
-    this->pontilhado->draw(this->screen, 0,0);
-    this->gameover->draw(this->screen, 36, 109);
-    cout << this->screen << endl;
-    pausar(5000);
-    return 0;
+
+    if(!this->escape){
+        this->gameOver();
+        return 0;
+    }
+    return -1;
 }

@@ -17,6 +17,9 @@ unsigned Game::run(SpriteBuffer &screen) {
             this->estado = Fase::LEVEL_1;
             if (this->fase1) {
                 int retorno = this->fase1->run(screen);
+                if(retorno == -1){
+                    break;
+                }
             }
             // Retorne ao MENU após concluir a Fase 1
             this->estado = Fase::MENU;
@@ -27,6 +30,9 @@ unsigned Game::run(SpriteBuffer &screen) {
             this->estado = Fase::LEVEL_2;
             if (this->fase2) {
                 int retorno = this->fase2->run(screen);
+                if(retorno == -1){
+                    break;
+                }
             }
             // Retorne ao MENU após concluir a Fase 2
             this->estado = Fase::MENU;
