@@ -159,6 +159,22 @@ void Fase2::init() {
         this->enemies[2] = nullptr;
     }
 
+Fase2::~Fase2() {
+    
+    // Deletando inimigos, verificando se não são nullptr
+    for (int i = 0; i < 3; i++) {
+        if (enemies[i] != nullptr) {
+            delete enemies[i];
+            enemies[i] = nullptr; // Limpa o ponteiro para evitar acessos inválidos
+        }
+    }
+
+    // Deletando sprites auxiliares
+    delete gameover;
+    delete pontilhado;
+
+}
+
 void Fase2::enemyCreator(){
 
     if(this->objs.size() > 14){

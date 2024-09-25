@@ -48,6 +48,8 @@ private:
 public:
     Fase2() : Fase("Fase - 2", Sprite("rsc/Fase2/background/ceu.img", COR::AZUL)) {this->init();};
 
+    ~Fase2();
+
     void pausar(int milissegundos);
 
     void capturarTecla();
