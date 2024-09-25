@@ -27,6 +27,8 @@ class Game : public Fase{
     
         Game() : Fase("Game", Sprite("rsc/Game/Gamebackground.img", COR::PADRAO)) {this->init();} 
 
+        ~Game();
+
         void pausar(int milissegundos);
 
         unsigned run(SpriteBuffer &screen);

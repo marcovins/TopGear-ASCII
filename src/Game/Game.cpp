@@ -1,5 +1,12 @@
 #include "Game.hpp"
 
+Game::~Game() {
+    delete fase1;
+    delete fase2;
+    delete menu;
+}
+
+
 void Game::init() {
     this->fase1 = new Fase1();
     this->fase2 = new Fase2();

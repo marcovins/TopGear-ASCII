@@ -194,11 +194,18 @@ Fase1::~Fase1() {
 
 void Fase1::enemyCreator(){
 
-    if(this->objs.size() > 14){
-        // Limpando lista de inimigos
-        for(auto enemy : this->enemies) {
-            delete enemy;
-            this->objs.pop_back();
+    if (this->objs.size() > 14) {
+    // Limpando lista de inimigos corretamente
+    for (int i = 0; i < 3; i++) {
+        if (this->enemies[i] != nullptr) {
+            delete this->enemies[i];
+            this->enemies[i] = nullptr;
+        }
+    }
+
+    // Remove os inimigos da lista objs
+    while (this->objs.size() > 14) {
+        this->objs.pop_back();
         }
     }
     
